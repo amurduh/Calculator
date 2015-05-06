@@ -15,14 +15,28 @@ class ViewController: UIViewController {
     var userIsInTheMiddleOfTypingANumber = false
     
     var brain = CalculatorBrain()
+    var digitCounter = 0
     
     @IBAction func appendDigit(sender: UIButton) {
         let digit = sender.currentTitle!
-        
+        historyLabel.text = brain.getHistory()
         if userIsInTheMiddleOfTypingANumber{
-            display.text = display.text! + digit
+            if digit == "." {
+                digitCounter += 1
+            }
+            if digitCounter <= 1 || digit != "."{
+                if digit == "π" {
+                    display.text = display.text! + "3.1415"
+                } else {
+                    display.text = display.text! + digit
+                }
+            }
         } else {
-            display.text = digit
+            if digit == "π" {
+                display.text = "3.1415"
+            } else {
+                display.text = digit
+            }
             userIsInTheMiddleOfTypingANumber = true
         }
     }
@@ -41,14 +55,17 @@ class ViewController: UIViewController {
         }
     }
     
- 
+    
+    @IBOutlet weak var historyLabel: UILabel!
     @IBAction func enter() {
         userIsInTheMiddleOfTypingANumber = false
         if let result = brain.pushOperand(displayValue) {
             displayValue = result
+            digitCounter = 0
         } else {
             displayValue = 0
         }
+        historyLabel.text = brain.getHistory()
     }
     
     var displayValue: Double {

@@ -31,7 +31,7 @@ class CalculatorBrain
     }
     
     private var opStack = [Op]() // array
-    
+    private var historyInformation = ""
     private var knownOps = [String: Op]() //Dictionary
     
     init() {
@@ -43,6 +43,8 @@ class CalculatorBrain
         learnOp(Op.BinaryOperation("+", +))
         learnOp(Op.BinaryOperation("−") {$1 - $0 })
         learnOp(Op.UnaryOperation("√", sqrt))
+        learnOp(Op.UnaryOperation("sin", sin))
+        learnOp(Op.UnaryOperation("cos", cos))
     }
     
     private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op])
@@ -74,6 +76,7 @@ class CalculatorBrain
     func evaluate() -> Double? {
         let (result, remainder) = evaluate(opStack)
         println("\(opStack) = \(result) with \(remainder) left over")
+        historyInformation = "\(opStack)"
         return result
     }
     
@@ -87,5 +90,9 @@ class CalculatorBrain
             opStack.append(operation)
         }
         return evaluate()
+    }
+    
+    func getHistory() -> String{
+        return historyInformation
     }
 }
