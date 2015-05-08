@@ -15,6 +15,8 @@ class CalculatorBrain
         case Operand(Double)
         case UnaryOperation(String, Double -> Double)
         case BinaryOperation(String, (Double, Double) -> Double)
+        case ClearValues(String)
+//        case BackSpace(String)
         
         var description: String {
             get {
@@ -25,6 +27,10 @@ class CalculatorBrain
                     return symbol
                 case .BinaryOperation(let symbol, _):
                     return symbol
+                case .ClearValues(let symbol):
+                    return symbol
+//                case .BackSpace(let symbol):
+//                    return symbol
                 }
             }
         }
@@ -45,6 +51,8 @@ class CalculatorBrain
         learnOp(Op.UnaryOperation("√", sqrt))
         learnOp(Op.UnaryOperation("sin", sin))
         learnOp(Op.UnaryOperation("cos", cos))
+        learnOp(Op.ClearValues("c"))
+//        learnOp(Op.BackSpace("␈"))
     }
     
     private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op])
@@ -68,9 +76,49 @@ class CalculatorBrain
                         return (operation(operand1, operand2), op2Evaluation.remainingOps)
                     }
                 }
+            case .ClearValues(let operand):
+                let emptyOps = [Op]()
+                opStack = [Op]()
+                historyInformation = ""
+                return (0, emptyOps)
+                
+//            case .BackSpace(let operand):
+//                var newString = operand
+//                var newDisplayValue = newString.removeAtIndex(newString.endIndex.predecessor())
+//
+//                             //var newDisplayValue = currentDisplay
+//                //var temporaryVariableNotUsedForAnything = newDisplayValue.removeAtIndex(newDisplayValue.endIndex.predecessor())
+//                return (newDisplayValue, remainingOps)
             }
         }
         return (nil, ops)
+    }
+    
+    func checkDigit(digit: String, currentDisplay: String) -> String{
+        switch digit {
+        case "π":
+            return "\(M_PI)"
+        case ".":
+            if (currentDisplay.rangeOfString(digit) != nil){
+                return ""
+            } else {
+                if (currentDisplay == "0"){
+                    return "0."
+                }
+                return digit
+            }
+//        case "␈":
+//            var newDisplayValue = currentDisplay
+//            var temporaryVariableNotUsedForAnything = newDisplayValue.removeAtIndex(newDisplayValue.endIndex.predecessor())
+//            return newDisplayValue
+        default:
+            if (currentDisplay.rangeOfString("0") == nil) {
+                return "\(digit)"
+            } else {
+                return "\(digit)"
+            }
+        
+        }
     }
     
     func evaluate() -> Double? {

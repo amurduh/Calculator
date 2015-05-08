@@ -19,24 +19,10 @@ class ViewController: UIViewController {
     
     @IBAction func appendDigit(sender: UIButton) {
         let digit = sender.currentTitle!
-        historyLabel.text = brain.getHistory()
         if userIsInTheMiddleOfTypingANumber{
-            if digit == "." {
-                digitCounter += 1
-            }
-            if digitCounter <= 1 || digit != "."{
-                if digit == "π" {
-                    display.text = display.text! + "3.1415"
-                } else {
-                    display.text = display.text! + digit
-                }
-            }
+            display.text = display.text! + brain.checkDigit(digit, currentDisplay: display.text!)
         } else {
-            if digit == "π" {
-                display.text = "3.1415"
-            } else {
-                display.text = digit
-            }
+            display.text = brain.checkDigit(digit, currentDisplay: display.text!)
             userIsInTheMiddleOfTypingANumber = true
         }
     }
@@ -53,6 +39,7 @@ class ViewController: UIViewController {
                 displayValue = 0
             }
         }
+        historyLabel.text = brain.getHistory()
     }
     
     
