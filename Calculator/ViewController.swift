@@ -59,7 +59,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var historyLabel: UILabel!
     @IBAction func enter() {
         userIsInTheMiddleOfTypingANumber = false
-        if let result = brain.pushOperand(displayValue) {
+        if let result = brain.pushOperand(displayValue!) {
             displayValue = result
             digitCounter = 0
         } else {
@@ -68,9 +68,14 @@ class ViewController: UIViewController {
         historyLabel.text = brain.getHistory()
     }
     
-    var displayValue: Double {
+    var displayValue: Double? {
         get {
-            return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
+            if (NSNumberFormatter().numberFromString(display.text!) != nil){
+                return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
+            }
+            else {
+                return nil
+            }
         }
         set {
             display.text = "\(newValue)"
