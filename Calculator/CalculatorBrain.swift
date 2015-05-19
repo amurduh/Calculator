@@ -16,7 +16,7 @@ class CalculatorBrain
         case UnaryOperation(String, Double -> Double)
         case BinaryOperation(String, (Double, Double) -> Double)
         case ClearValues(String)
-//        case BackSpace(String)
+        //        case BackSpace(String)
         
         var description: String {
             get {
@@ -29,8 +29,8 @@ class CalculatorBrain
                     return symbol
                 case .ClearValues(let symbol):
                     return symbol
-//                case .BackSpace(let symbol):
-//                    return symbol
+                    //                case .BackSpace(let symbol):
+                    //                    return symbol
                 }
             }
         }
@@ -52,7 +52,28 @@ class CalculatorBrain
         learnOp(Op.UnaryOperation("sin", sin))
         learnOp(Op.UnaryOperation("cos", cos))
         learnOp(Op.ClearValues("c"))
-//        learnOp(Op.BackSpace("␈"))
+        //        learnOp(Op.BackSpace("␈"))
+    }
+    
+    typealias PropertyList = AnyObject
+    var program: PropertyList { //guarenteed to be a PropertyList
+        get {
+            
+            return opStack.map{ $0.description}
+        }
+        set {
+            if let opSymbols = newValue as? Array<String> {
+                var newOpStack = [Op]()
+                for opSymbol in opSymbols {
+                    if let op = knownOps[opSymbol]{
+                        newOpStack.append(op)
+                    } else if let operand = NSNumberFormatter().numberFromString(opSymbol)?.doubleValue {
+                        newOpStack.append(.Operand(operand))
+                    }
+                }
+                opStack = newOpStack
+            }
+        }
     }
     
     private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op])
@@ -82,13 +103,13 @@ class CalculatorBrain
                 historyInformation = ""
                 return (0, emptyOps)
                 
-//            case .BackSpace(let operand):
-//                var newString = operand
-//                var newDisplayValue = newString.removeAtIndex(newString.endIndex.predecessor())
-//
-//                             //var newDisplayValue = currentDisplay
-//                //var temporaryVariableNotUsedForAnything = newDisplayValue.removeAtIndex(newDisplayValue.endIndex.predecessor())
-//                return (newDisplayValue, remainingOps)
+                //            case .BackSpace(let operand):
+                //                var newString = operand
+                //                var newDisplayValue = newString.removeAtIndex(newString.endIndex.predecessor())
+                //
+                //                             //var newDisplayValue = currentDisplay
+                //                //var temporaryVariableNotUsedForAnything = newDisplayValue.removeAtIndex(newDisplayValue.endIndex.predecessor())
+                //                return (newDisplayValue, remainingOps)
             }
         }
         return (nil, ops)
@@ -107,17 +128,17 @@ class CalculatorBrain
                 }
                 return digit
             }
-//        case "␈":
-//            var newDisplayValue = currentDisplay
-//            var temporaryVariableNotUsedForAnything = newDisplayValue.removeAtIndex(newDisplayValue.endIndex.predecessor())
-//            return newDisplayValue
+            //        case "␈":
+            //            var newDisplayValue = currentDisplay
+            //            var temporaryVariableNotUsedForAnything = newDisplayValue.removeAtIndex(newDisplayValue.endIndex.predecessor())
+            //            return newDisplayValue
         default:
             if (currentDisplay.rangeOfString("0") == nil) {
                 return "\(digit)"
             } else {
                 return "\(digit)"
             }
-        
+            
         }
     }
     
@@ -131,6 +152,28 @@ class CalculatorBrain
     func pushOperand(operand: Double) -> Double?{
         opStack.append(Op.Operand(operand))
         return evaluate()
+    }
+    
+    func performSpecialTask(symbol: String, displayValue: String) -> Double? {
+        switch symbol {
+        case "␈":
+            var newValue = displayValue
+            return nil
+//            newValue = newValue.removeAtIndex(count(newValue) - 1)
+//            return newValue
+//            println(displayValue.endIndex.predecessor())
+//            var newValue = ""
+//            
+//            for characters in displayValue {
+//                newValue.append(characters)
+//                println(newValue)
+//            }
+//            return nil
+        case "π":
+            return M_PI
+        default:
+            return nil
+        }
     }
     
     func performOperation(symbol: String) -> Double?{

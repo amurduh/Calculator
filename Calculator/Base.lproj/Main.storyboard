@@ -256,7 +256,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="appendDigit:" destination="BYZ-38-t0r" eventType="touchUpInside" id="FMt-6L-udt"/>
+                                    <action selector="specialButtonPress:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6ac-nT-Aw6"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dCf-IG-Mkt">
@@ -266,7 +266,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="operate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NDt-K0-Kck"/>
+                                    <action selector="specialButtonPress:" destination="BYZ-38-t0r" eventType="touchUpInside" id="STI-pF-HSs"/>
                                 </connections>
                             </button>
                         </subviews>

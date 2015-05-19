@@ -27,6 +27,19 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func specialButtonPress(sender: UIButton) {
+        let specialButton = sender.currentTitle!
+        
+        if let operation = sender.currentTitle {
+            if let result = brain.performSpecialTask(specialButton, displayValue: "\(displayValue)") {
+                displayValue = result
+            } else {
+                displayValue = 0
+            }
+        }
+        
+    }
+    
     @IBAction func operate(sender: UIButton) {
         let operation = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber {
