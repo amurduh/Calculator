@@ -78,7 +78,7 @@ class ViewController: UIViewController {
             }
         }
         set {
-            display.text = "\(newValue)"
+            display.text = "\(newValue!)"
             userIsInTheMiddleOfTypingANumber = false
         }
         
